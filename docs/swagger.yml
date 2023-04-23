@@ -23,6 +23,9 @@ paths:
             schema:
               type: object
               properties:
+                email:
+                  type: string
+                  example: carlos@email.com
                 name:
                   type: string
                   example: Carlos
@@ -30,6 +33,7 @@ paths:
                   type: string
                   example: 123456789
               required:
+                - email
                 - name
                 - password
       responses:
@@ -123,7 +127,9 @@ paths:
         - to-do-list
       parameters:
         - name: toDoId
-          in: header
+          schema:
+            type: string
+          in: path
           required: true
           description: The id of to do list
           example: a6dcefca-3f0f-4312-972c-aa6069dcbda5
@@ -156,7 +162,9 @@ paths:
         - to-do-list
       parameters:
         - name: toDoId
-          in: header
+          schema:
+            type: string
+          in: path
           required: true
           description: The id of to do list
           example: a6dcefca-3f0f-4312-972c-aa6069dcbda5
@@ -186,7 +194,9 @@ paths:
         - to-do-item
       parameters:
         - name: toDoId
-          in: header
+          schema:
+            type: string
+          in: path
           required: true
           description: The id of to do list
           example: a6dcefca-3f0f-4312-972c-aa6069dcbda5
@@ -224,12 +234,16 @@ paths:
         - to-do-item
       parameters:
         - name: toDoId
-          in: header
+          schema:
+            type: string
+          in: path
           required: true
           description: The id of to do list
           example: a6dcefca-3f0f-4312-972c-aa6069dcbda5
         - name: itemId
-          in: header
+          schema:
+            type: string
+          in: path
           required: true
           description: The id of item from to do list
           example: a6dcefca-3f0f-4312-972c-aa6069dcbda5

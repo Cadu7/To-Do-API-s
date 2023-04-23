@@ -16,18 +16,13 @@ export class UserRepository {
   }
 
   async createNewUser(userData: UserData) {
-
-    const userToInsert = {
+    await user.create({
+      data: {
         password: await hash(userData.password, 10),
         email: userData.email,
         name: userData.name,
         id: v4()
       }
-
-    console.log({userToInsert})
-    let newVar = await user.create({
-      data: userToInsert
     });
-    console.log({newVar})
   }
 }
