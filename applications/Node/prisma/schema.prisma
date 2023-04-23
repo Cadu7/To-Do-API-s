@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_CONNECTION_STRING")
+}
+
+model User {
+  id       String     @id
+  email    String
+  name     String
+  password String
+  customer Customer[]
+
+  @@map("user")
+}
+
+model ToDoItem {
+  id            String    @id
+  content       String
+  images        Images?   @relation(fields: [images_id], references: [id])
+  to_do         Boolean   @default(false)
+  deleted       Boolean?
+  deleted_date  DateTime?
+  images_id     String?
+  ToDoList      ToDoList? @relation(fields: [to_do_list_id], references: [id], onDelete: Cascade)
+  to_do_list_id String?
+
+  @@map("to_do_item")
+}
+
+model ToDoList {
+  id          String     @id
+  name        String
+  items       ToDoItem[]
+  created_at  DateTime   @default(now())
+  updated_at  DateTime
+  customer    Customer?  @relation(fields: [customer_id], references: [id], onDelete: Cascade)
+  customer_id String?
+
+  @@map("to_do_list")
+}
+
+model Customer {
+  id         String     @id
+  user       User       @relation(fields: [user_id], references: [id])
+  lists      ToDoList[]
+  created_at DateTime   @default(now())
+  user_id    String
+
+  @@map("customer")
+}
+
+model Images {
+  id      String     @id
+  content Bytes
+  item    ToDoItem[]
+
+  @@map("images")
+}
