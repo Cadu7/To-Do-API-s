@@ -1,0 +1,29 @@
+User:{
+    id: uuid
+    name: string
+    password: string
+}
+
+To-do-item:{
+    id: uuid
+    content: string
+//  images: Images
+    to-do: false
+    deleted?: boolean
+    deleted_date?: Date
+}
+
+To-do-list: {
+    id: uuid
+    name: string
+    items: Item[]
+    created_at: Date
+    updated_at: Date
+}
+
+Customer: {
+    id: uuid
+    user: User
+    lists: To-do[]
+    created_at: Date
+}

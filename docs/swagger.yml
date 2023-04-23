@@ -1,0 +1,317 @@
+openapi: 3.0.3
+info:
+  title: To Do List API
+  description: A simple API with basic crud of a to do list
+  version: 1.0.0
+  contact:
+    email: cadumdecarvalho@gmail.com
+    name: Carlos Eduardo Mattos de Carvalho
+    url: https://www.linkedin.com/in/carlos-eduardo-mattos-carvalho/
+servers:
+  - url: "http://localhost:8080"
+    description: "Local API"
+paths:
+  /user:
+    post:
+      summary: Create new user
+      description: Path for create a new user for the application
+      tags:
+        - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Carlos
+                password:
+                  type: string
+                  example: 123456789
+              required:
+                - name
+                - password
+      responses:
+        201:
+          description: The user was successfully created
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorBodyResponse"
+              example:
+                error: Objeto inválido
+                message: O usuário não foi informado no body da requisição
+        500:
+          $ref: "#/components/responses/500"
+  /to-do:
+    post:
+      summary: Create a new to do list
+      description: Path for create a new to do list for an user
+      security:
+        - bearerAuth: []
+      tags:
+        - to-do-list
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                items:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/itemRequest"
+              required:
+                - name
+      responses:
+        201:
+          description: The to do list was successfully created
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorBodyResponse"
+              example:
+                error: Objeto inválido
+                message: O nome da lista não foi informado no body da requisição
+        401:
+          $ref: "#/components/responses/401"
+        500:
+          $ref: "#/components/responses/500"
+    get:
+      summary: Get all to do lists
+      description: Path for get all to do list of current user
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - to-do-list
+      responses:
+        200:
+          description: To do lists were successfully found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/toDoList"
+        401:
+          $ref: "#/components/responses/401"
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorBodyResponse"
+              example:
+                error: Não encontrado
+                message: Nenhuma to do list foi encontrada para o usuário atual
+        500:
+          $ref: "#/components/responses/500"
+  /to-do/{toDoId}:
+    get:
+      summary: Get list of to do
+      description: Path for get a list of to do by id of the current user
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - to-do-list
+      parameters:
+        - name: toDoId
+          in: header
+          required: true
+          description: The id of to do list
+          example: a6dcefca-3f0f-4312-972c-aa6069dcbda5
+      responses:
+        200:
+          description: To do lists were successfully found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/toDoList"
+        401:
+          $ref: "#/components/responses/401"
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorBodyResponse"
+              example:
+                error: Não encontrado
+                message: Nenhuma to do list foi encontrada para o id informado
+        500:
+          $ref: "#/components/responses/500"
+    delete:
+      summary: Delete list of to do
+      description: Path for delete a list of to do by id of the current user
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - to-do-list
+      parameters:
+        - name: toDoId
+          in: header
+          required: true
+          description: The id of to do list
+          example: a6dcefca-3f0f-4312-972c-aa6069dcbda5
+      responses:
+        200:
+          description: To do list was successfully deleted
+        401:
+          $ref: "#/components/responses/401"
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorBodyResponse"
+              example:
+                error: Não encontrado
+                message: Nenhuma to do list foi encontrada para o id informado
+        500:
+          $ref: "#/components/responses/500"
+  /to-do/item/{toDoId}:
+    patch:
+      summary: Add item to a list of to do
+      description: Path for add an item for the specified to do list of the current user
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - to-do-item
+      parameters:
+        - name: toDoId
+          in: header
+          required: true
+          description: The id of to do list
+          example: a6dcefca-3f0f-4312-972c-aa6069dcbda5
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/itemRequest"
+
+      responses:
+        200:
+          description: To do list were successfully updated
+        401:
+          $ref: "#/components/responses/401"
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorBodyResponse"
+              example:
+                error: Não encontrado
+                message: Nenhuma to do list foi encontrada para o id informado
+        500:
+          $ref: "#/components/responses/500"
+  /to-do/item/{toDoId}/{itemId}:
+    delete:
+      summary: Delete a to do from a list
+      description: Path for delete a to do item, from the list id informed of the current user
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - to-do-item
+      parameters:
+        - name: toDoId
+          in: header
+          required: true
+          description: The id of to do list
+          example: a6dcefca-3f0f-4312-972c-aa6069dcbda5
+        - name: itemId
+          in: header
+          required: true
+          description: The id of item from to do list
+          example: a6dcefca-3f0f-4312-972c-aa6069dcbda5
+      responses:
+        200:
+          description: To do item was successfully deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/toDoList"
+        401:
+          $ref: "#/components/responses/401"
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorBodyResponse"
+              example:
+                error: Não encontrado
+                message: Nenhuma to do list foi encontrada para o id informado
+        500:
+          $ref: "#/components/responses/500"
+
+components:
+  schemas:
+    toDoList:
+      type: object
+      properties:
+        id:
+          type: string
+          example: a6dcefca-3f0f-4312-972c-aa6069dcbda5
+        name:
+          type: string
+          example: supermarket list
+        lastUpdate:
+          type: string
+          example: 2023-05-07 12:30:57
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/toDoItem"
+    toDoItem:
+      type: object
+      properties:
+        id:
+          type: string
+          example: a6dcefca-3f0f-4312-972c-aa6069dcbd25
+        content:
+          type: string
+          example: apple
+        toDo:
+          type: boolean
+          example: false
+    itemRequest:
+      type: object
+      properties:
+        content:
+          type: string
+      required:
+        - content
+    errorBodyResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+  responses:
+    401:
+      description: The token was not informed or is invalid
+    500:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/errorBodyResponse"
+          example:
+            error: Erro desconhecido
+            message: Houve algum erro inesperado na aplicação
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
