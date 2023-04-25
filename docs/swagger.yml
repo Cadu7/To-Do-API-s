@@ -50,6 +50,58 @@ paths:
                 message: O usuário não foi informado no body da requisição
         500:
           $ref: "#/components/responses/500"
+  /session/login:
+    post:
+      summary: Login in the system
+      description: Path for login with the user in the system
+      tags:
+        - security
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: carlos@email.com
+                password:
+                  type: string
+                  example: 123456789
+              required:
+                - username
+                - password
+      responses:
+        200:
+          description: The user was successfully logged in
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorBodyResponse"
+              example:
+                error: Objeto inválido
+                message: O usuário não foi informado no body da requisição
+        401:
+          description: Invalid auth
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorBodyResponse"
+              example:
+                error: Usuário inválido
+                message: A senha ou o usuário estão incorretos
+        500:
+          $ref: "#/components/responses/500"
   /to-do:
     post:
       summary: Create a new to do list
