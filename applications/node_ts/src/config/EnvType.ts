@@ -1,12 +1,14 @@
 import {CorsOptions} from "cors";
 
 export interface EnvType {
-  config:{
-    emailRegex: RegExp
-  },
   application: {
     language: string,
     port: number,
-    cors: CorsOptions
+    emailRegex: RegExp,
+    cors: CorsOptions,
+    security: {
+      secret: string,
+      expireIn: string | number
+    }
   }
 }

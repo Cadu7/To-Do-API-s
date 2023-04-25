@@ -14,6 +14,7 @@ switch (env.application.language) {
 }
 
 export interface MessageType {
+  INCORRECT_USER_OR_PASSWORD: string;
   PASSWORD_TOO_SHORT: string;
   UNKNOWN_ERROR: string;
   INVALID_USER_NAME: string

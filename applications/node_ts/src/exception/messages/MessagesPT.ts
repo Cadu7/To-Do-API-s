@@ -1,6 +1,7 @@
 import {MessageType} from "./Messages"
 
 export const messagesPT: MessageType = {
+  INCORRECT_USER_OR_PASSWORD: "O usuário ou senha está incorreto",
   PASSWORD_TOO_SHORT: "A senha deve conter pelo menos 12 caracteres",
   FIELD_IS_NOT_EMAIL: "O email informado é inválido",
   INVALID_USER_NAME: "O email informado já está cadastrado",

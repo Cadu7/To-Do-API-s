@@ -1,9 +1,10 @@
-import {InvalidRequest} from "./InvalidRequest";
+import {InvalidRequestException} from "./InvalidRequestException";
 import {NextFunction, Response, Request} from "express";
 import {log} from "../config/Log";
 import {messages} from "./messages/Messages";
+import {AuthRequestException} from "./AuthRequestException";
 
-export const exceptionHandler = (error: Error | InvalidRequest,
+export const exceptionHandler = (error: Error | InvalidRequestException | AuthRequestException,
                                  _request: Request,
                                  response: Response,
                                  _next: NextFunction) => {
@@ -13,9 +14,12 @@ export const exceptionHandler = (error: Error | InvalidRequest,
   let body;
   let status;
 
-  if (error instanceof InvalidRequest) {
+  if (error instanceof InvalidRequestException) {
     status = 400
-    body = {message: error.message, error: error.error}
+    body = error.getBody()
+  } else if (error instanceof AuthRequestException) {
+    status = error.status;
+    body = error.getBody();
   } else {
     status = 500
     body = {error: messages.UNKNOWN_ERROR, message: error.message}
