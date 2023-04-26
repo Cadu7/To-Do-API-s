@@ -11,3 +11,9 @@ services:
       POSTGRES_DB: to_do_db
       POSTGRES_PASSWORD: q3P9MYsh49pNmVlPnKdhoX4hssCDi1uKsTL4iREqubyqYOe1dLE3mXwQwEDgHUTKTcwX0gMpcj8bHn0aQQbRjwn38KRuLph8H33l
       POSTGRES_USER: application
+    networks:
+      - db-api
+
+networks:
+  db-api:
+    name: db-api-network

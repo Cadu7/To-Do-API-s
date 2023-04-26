@@ -19,7 +19,7 @@ export const checkIsNull = (field: any, fieldName: string): void => {
   }
 }
 export const checkIsEmpty = (field: any, fieldName: string): void => {
-  if (field instanceof String && field.trim().length == 0) {
+  if ((field instanceof String || typeof field == 'string') && field.trim().length == 0) {
     throw new InvalidRequestException(messages.INVALID_OBJECT, messages.FIELD_IS_NULL(fieldName));
   }
 }
@@ -29,6 +29,7 @@ export const checkIsUUID = (field: any, fieldName: string): void => {
     throw new InvalidRequestException(messages.INVALID_OBJECT, messages.FIELD_IS_NOT_UUID(fieldName));
   }
 }
+
 export const checkIsEmail = (field: any, fieldName: string): void => {
   if (!field.match(env.application.emailRegex)) {
     throw new InvalidRequestException(messages.INVALID_OBJECT, messages.FIELD_IS_NOT_EMAIL);

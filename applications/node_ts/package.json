@@ -2,10 +2,13 @@
   "name": "to-do-node",
   "version": "1.0.0",
   "description": "",
-  "main": "src/web/Server.ts",
+  "main": "src/app/web/Server.ts",
   "scripts": {
-    "dev": "ts-node-dev src/web/Server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "ts-node-dev src/app/web/Server.ts",
+    "build": "tsc --project tsconfig.json",
+    "clean": "tsc --build --clean",
+    "start": "node -r ts-node ./dist/src/app/web/Server.js",
+    "test": "vitest"
   },
   "keywords": [],
   "author": "Carlos Eduardo Mattos de Carvalho",
@@ -20,7 +23,8 @@
     "prisma": "^4.13.0",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "vitest": "^0.30.1"
   },
   "dependencies": {
     "@prisma/client": "4.13.0",
