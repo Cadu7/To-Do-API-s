@@ -15,7 +15,7 @@ export const exceptionHandler = (error: Error | InvalidRequestException | AuthRe
   let status;
 
   if (error instanceof InvalidRequestException) {
-    status = 400
+    status = error.status
     body = error.getBody()
   } else if (error instanceof AuthRequestException) {
     status = error.status;

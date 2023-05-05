@@ -14,6 +14,12 @@ switch (env.application.language) {
 }
 
 export interface MessageType {
+  CANNOT_PERFORM_THIS_ACTION: string;
+  TO_DO_LIST_NOT_FOUND: string;
+  NOT_FOUND: string;
+  CUSTOMER_NOT_FOUND: string;
+  MISSING_OR_WRONG_TOKEN: string;
+  UNAUTHORIZED: string;
   INCORRECT_USER_OR_PASSWORD: string;
   PASSWORD_TOO_SHORT: string;
   UNKNOWN_ERROR: string;

@@ -1,6 +1,12 @@
 import {MessageType} from "./Messages";
 
 export const messagesEN: MessageType = {
+  CANNOT_PERFORM_THIS_ACTION: "The current user cannot perform this action",
+  NOT_FOUND: "Object not found",
+  TO_DO_LIST_NOT_FOUND: "To do list was not found",
+  CUSTOMER_NOT_FOUND: "The customer that makes the request was not found",
+  MISSING_OR_WRONG_TOKEN: "Missing or wrong type of token",
+  UNAUTHORIZED: "Unauthorized",
   INCORRECT_USER_OR_PASSWORD: "Incorrect user or password",
   PASSWORD_TOO_SHORT: "Password must contain at least 12 characters",
   FIELD_IS_NOT_EMAIL: "The informed email is invalid",

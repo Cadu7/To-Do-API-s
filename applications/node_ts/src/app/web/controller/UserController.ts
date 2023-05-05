@@ -7,7 +7,7 @@ export class UserController {
   async create(request: Request, response: Response) {
     const body = request.body;
 
-    await container.resolve(UserService).create(body)
+    await container.resolve(UserService).createUser(body)
 
     response.status(201).send();
   }

@@ -5,12 +5,14 @@ import {UserService} from "./UserService";
 import {messages} from "../exception/messages/Messages";
 import {AuthRequestException} from "../exception/AuthRequestException";
 import {User} from "@prisma/client";
-import {sign} from 'jsonwebtoken'
+import {sign, verify, VerifyCallback} from 'jsonwebtoken'
 import {env} from "../config/Env";
 
 const {security} = env.application
 
 export class SecurityService {
+
+  private readonly ISSUER: string = "to-do-api-node";
 
   async login(username: string, password: string): Promise<string> {
 
@@ -18,7 +20,6 @@ export class SecurityService {
     validateField(password, "password", checkIsNull, checkIsEmpty)
 
     const user = await container.resolve(UserService).findUserByUserName(username);
-    console.log({user})
     if (!user) {
       throw new AuthRequestException(messages.INVALID_OBJECT, messages.INCORRECT_USER_OR_PASSWORD);
     }
@@ -34,7 +35,7 @@ export class SecurityService {
     return sign(
       {email: user.email, name: user.name},
       security.secret,
-      {issuer: "to-do-api-node", expiresIn: security.expireIn}
+      {issuer: this.ISSUER, expiresIn: security.expireIn}
     )
   }
 
@@ -46,4 +47,11 @@ export class SecurityService {
     return compareSync(password, encrypted)
   }
 
+  verifyToken(token: string): any {
+    try {
+      return verify(token, security.secret, {issuer: this.ISSUER})
+    } catch (error) {
+      throw new AuthRequestException(messages.UNAUTHORIZED, messages.MISSING_OR_WRONG_TOKEN)
+    }
+  }
 }

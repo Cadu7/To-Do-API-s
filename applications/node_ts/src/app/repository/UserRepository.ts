@@ -1,4 +1,4 @@
-import {user} from "./Prima";
+import {user} from "./Prisma";
 import {User} from "@prisma/client"
 import {InvalidRequestException} from "../exception/InvalidRequestException";
 import {messages} from "../exception/messages/Messages";
@@ -14,8 +14,8 @@ export class UserRepository {
     }
   }
 
-  async createNewUser(userData: UserData) {
-    await user.create({
+  async createNewUser(userData: UserData): Promise<User> {
+    return user.create({
       data: {
         password: userData.password,
         email: userData.email,
