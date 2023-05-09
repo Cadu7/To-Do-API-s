@@ -302,10 +302,6 @@ paths:
       responses:
         200:
           description: To do item was successfully deleted
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/toDoList"
         401:
           $ref: "#/components/responses/401"
         404:

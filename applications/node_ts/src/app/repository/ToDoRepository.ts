@@ -76,4 +76,45 @@ export class ToDoRepository {
     })
       .then(result => result.map(object => object.id))
   }
+
+  addItemsToList(toDoId: string, id: string, items: ToDoItemsRequest[]) {
+    return toDoList.update({
+      where: {
+        id: toDoId,
+      },
+      data: {
+        items: {
+          createMany: {data: items.map(item => ({id: v4(), content: item.content}))}
+        }
+      }
+    })
+  }
+
+  removeItemsToList(toDoId: string, id: string, itemId: string) {
+    return toDoList.update({
+      where:{
+        id: toDoId,
+        // AND:{
+        //   items :{
+        //     some: {
+        //       id: itemId
+        //     }
+        //   }
+        // }
+      },
+      data:{
+        items:{
+          update:{
+            where:{
+              id: itemId
+            },
+            data:{
+              deleted: true,
+              deleted_date: new Date()
+            }
+          }
+        }
+      }
+    })
+  }
 }

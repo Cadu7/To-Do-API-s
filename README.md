@@ -21,7 +21,7 @@ This project is three equals api's, but with different technologies of a simple 
   <details>
   <summary>Using installed postgres</summary>
   
-      No action will be necessary
+      Run the sql script that are in ./database/scripts to create the tables
   </details>
   <details>
   <summary>Using installed docker</summary>

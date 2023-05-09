@@ -23,6 +23,11 @@ export const checkIsEmpty = (field: any, fieldName: string): void => {
     throw new InvalidRequestException(messages.INVALID_OBJECT, messages.FIELD_IS_NULL(fieldName));
   }
 }
+export const checkIsEmptyList = (field: any[], fieldName: string): void => {
+  if (field == null || field.length == 0) {
+    throw new InvalidRequestException(messages.INVALID_OBJECT, messages.FIELD_IS_NULL(fieldName));
+  }
+}
 
 export const checkIsUUID = (field: any, fieldName: string): void => {
   if (!validate(field)) {

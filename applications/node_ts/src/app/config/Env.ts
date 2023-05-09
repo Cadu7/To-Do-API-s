@@ -1,7 +1,5 @@
-import {config} from "dotenv";
+import "dotenv/config";
 import {EnvType} from "./EnvType";
-
-config()
 
 const secret: string | undefined = process.env.SECURITY_SECRET
 

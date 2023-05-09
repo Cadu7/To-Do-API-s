@@ -8,7 +8,6 @@ User:{
 To-do-item:{
     id: uuid
     content: string
-//  images: Images
     to-do: false
     deleted?: boolean
     deleted_date?: Date
