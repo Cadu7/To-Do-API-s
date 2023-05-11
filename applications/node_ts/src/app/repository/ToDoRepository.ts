@@ -4,7 +4,7 @@ import {v4} from "uuid";
 
 export class ToDoRepository {
 
-  async create(param: { name: string; userId: string; items: ToDoItemsRequest[] }) {
+  async create(param: { name: string; userId: string; items: ToDoItemsRequest[] }): Promise<void> {
 
     await toDoList.create({
       data: {
@@ -55,7 +55,7 @@ export class ToDoRepository {
     })
   }
 
-  async deleteOneByIds(toDoId: string) {
+  async deleteOneByIds(toDoId: string): Promise<void> {
     await toDoList.delete({
       where: {
         id: toDoId
@@ -103,7 +103,7 @@ export class ToDoRepository {
     })
   }
 
-  async updateItem(toDoId: string, itemId: string, content: string | undefined, toDo: undefined | boolean) {
+  async updateItem(toDoId: string, itemId: string, content: string | undefined, toDo: undefined | boolean): Promise<void> {
     await toDoList.update({
       where: {id: toDoId},
       data: {
@@ -117,7 +117,20 @@ export class ToDoRepository {
               to_do: toDo
             }
           }
-        }
+        },
+        updated_at: new Date()
+      }
+    })
+  }
+
+  async updateListName(toDoId: string, content: string): Promise<void> {
+    await toDoList.update({
+      where: {
+        id: toDoId
+      },
+      data: {
+        name: content,
+        updated_at: new Date()
       }
     })
   }

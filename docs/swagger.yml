@@ -107,7 +107,7 @@ paths:
       summary: Create a new to do list
       description: Path for create a new to do list for an user
       security:
-        - bearerAuth: []
+        - bearerAuth: [ ]
       tags:
         - to-do-list
       requestBody:
@@ -121,7 +121,7 @@ paths:
                 items:
                   type: array
                   items:
-                    $ref: "#/components/schemas/itemRequest"
+                    $ref: "#/components/schemas/contentRequest"
               required:
                 - name
       responses:
@@ -236,6 +236,42 @@ paths:
                 message: Nenhuma to do list foi encontrada para o id informado
         500:
           $ref: "#/components/responses/500"
+    put:
+      summary: Update list of to do
+      description: Path for update a list of to do by id of the current user
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - to-do-list
+      parameters:
+        - name: toDoId
+          schema:
+            type: string
+          in: path
+          required: true
+          description: The id of to do list
+          example: a6dcefca-3f0f-4312-972c-aa6069dcbda5
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/contentRequest"
+      responses:
+        200:
+          description: To do list was successfully updated
+        401:
+          $ref: "#/components/responses/401"
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorBodyResponse"
+              example:
+                error: Não encontrado
+                message: Nenhuma to do list foi encontrada para o id informado
+        500:
+          $ref: "#/components/responses/500"
   /to-do/item/{toDoId}:
     patch:
       summary: Add item to a list of to do
@@ -258,7 +294,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: "#/components/schemas/itemRequest"
+                $ref: "#/components/schemas/contentRequest"
 
       responses:
         200:
@@ -389,7 +425,7 @@ components:
         toDo:
           type: boolean
           example: false
-    itemRequest:
+    contentRequest:
       type: object
       properties:
         content:
