@@ -1,6 +1,8 @@
 import {MessageType} from "./Messages"
 
 export const messagesPT: MessageType = {
+  INSUFFICIENT_FIELDS: "Pelo menos um campo deve ser informado na requisição",
+  TO_DO_ITEM_NOT_FOUND: "Item da lista de a fazeres não encontrado",
   CANNOT_PERFORM_THIS_ACTION: "O usuario atual não pode executar esta ação ",
   NOT_FOUND: "Objeto não encontrado",
   TO_DO_LIST_NOT_FOUND: "Lista de a fazeres não encontrado",

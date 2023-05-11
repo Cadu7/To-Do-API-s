@@ -9,8 +9,6 @@ To-do-item:{
     id: uuid
     content: string
     to-do: false
-    deleted?: boolean
-    deleted_date?: Date
 }
 
 To-do-list: {

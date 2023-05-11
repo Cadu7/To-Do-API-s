@@ -15,17 +15,11 @@ export interface IToDoList {
 }
 
 const toDoItemMapper = (item: ToDoItem): IToDoItem => {
-  return item.deleted == null ?
-    {
-      toDo: item.to_do,
-      content: item.content,
-      id: item.id,
-    } : {
-      toDo: item.to_do,
-      content: item.content,
-      id: item.id,
-      deleted: item.deleted
-    }
+  return {
+    toDo: item.to_do,
+    content: item.content,
+    id: item.id,
+  }
 }
 
 export const toDoListMapper = (toDo: (ToDoList & { items: ToDoItem[]; customer: Customer | null })): IToDoList => {
@@ -34,7 +28,6 @@ export const toDoListMapper = (toDo: (ToDoList & { items: ToDoItem[]; customer: 
     name: toDo.name,
     lastUpdate: toDo.updated_at,
     items: toDo.items
-      // .filter(item => !(item.deleted && item.deleted == true))
       .map(item => toDoItemMapper(item))
   }
 }

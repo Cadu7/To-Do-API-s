@@ -20,12 +20,8 @@ model User {
 model ToDoItem {
   id            String    @id
   content       String
-  images        Images?   @relation(fields: [images_id], references: [id])
   to_do         Boolean   @default(false)
-  deleted       Boolean?
-  deleted_date  DateTime?
-  images_id     String?
-  ToDoList      ToDoList? @relation(fields: [to_do_list_id], references: [id], onDelete: Cascade)
+  ToDoList      ToDoList? @relation(fields: [to_do_list_id], references: [id])
   to_do_list_id String?
 
   @@map("to_do_item")
@@ -51,12 +47,4 @@ model Customer {
   user_id    String
 
   @@map("customer")
-}
-
-model Images {
-  id      String     @id
-  content Bytes
-  item    ToDoItem[]
-
-  @@map("images")
 }

@@ -315,6 +315,49 @@ paths:
                 message: Nenhuma to do list foi encontrada para o id informado
         500:
           $ref: "#/components/responses/500"
+    put:
+      summary: Update a to do item from a list
+      description: Path for update a to do item, from the list id informed of the current user
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - to-do-item
+      parameters:
+        - name: toDoId
+          schema:
+            type: string
+          in: path
+          required: true
+          description: The id of to do list
+          example: a6dcefca-3f0f-4312-972c-aa6069dcbda5
+        - name: itemId
+          schema:
+            type: string
+          in: path
+          required: true
+          description: The id of item from to do list
+          example: a6dcefca-3f0f-4312-972c-aa6069dcbda5
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/itemRequestUpdate"
+      responses:
+        200:
+          description: To do item was successfully updated
+        401:
+          $ref: "#/components/responses/401"
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorBodyResponse"
+              example:
+                error: Não encontrado
+                message: Nenhuma to do list foi encontrada para o id informado
+        500:
+          $ref: "#/components/responses/500"
 
 components:
   schemas:
@@ -353,6 +396,15 @@ components:
           type: string
       required:
         - content
+    itemRequestUpdate:
+      type: object
+      properties:
+        content:
+          type: string
+          example: "content 01"
+        toDo:
+          type: boolean
+          example: true
     errorBodyResponse:
       type: object
       properties:

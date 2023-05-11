@@ -2,9 +2,10 @@ import {Request, Response} from "express";
 import {container} from "tsyringe";
 import {ToDoService} from "../../service/ToDoService";
 import {IToDoList} from "../../model/IToDoList";
-import {ToDoItemsRequest} from "../../model/ToDoItemsRequest";
+import {ToDoItemsRequest, ToDoItemsRequestUpdate} from "../../model/ToDoItemsRequest";
 
 export class ToDoController {
+
   async create(request: Request, response: Response) {
 
     const {user} = response.locals
@@ -61,6 +62,17 @@ export class ToDoController {
     const items = request.body as ToDoItemsRequest[]
 
     await container.resolve(ToDoService).addItems(user, toDoId, items);
+
+    response.status(200).send();
+  }
+
+  async updateItem(request: Request, response: Response) {
+
+    const {user} = response.locals
+    const {toDoId, itemId} = request.params;
+    const item = request.body as ToDoItemsRequestUpdate
+
+    await container.resolve(ToDoService).updateItem(user, toDoId, itemId, item);
 
     response.status(200).send();
   }

@@ -1,6 +1,8 @@
 import {MessageType} from "./Messages";
 
 export const messagesEN: MessageType = {
+  INSUFFICIENT_FIELDS: "At least one field must be informed in request",
+  TO_DO_ITEM_NOT_FOUND: "To do item was not found",
   CANNOT_PERFORM_THIS_ACTION: "The current user cannot perform this action",
   NOT_FOUND: "Object not found",
   TO_DO_LIST_NOT_FOUND: "To do list was not found",

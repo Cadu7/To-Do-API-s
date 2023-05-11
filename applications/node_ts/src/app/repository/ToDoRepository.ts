@@ -85,32 +85,36 @@ export class ToDoRepository {
       data: {
         items: {
           createMany: {data: items.map(item => ({id: v4(), content: item.content}))}
-        }
+        },
+        updated_at: new Date()
       }
     })
   }
 
-  removeItemsToList(toDoId: string, id: string, itemId: string) {
+  removeItemFromToDoList(toDoId: string, itemId: string) {
     return toDoList.update({
-      where:{
+      where: {
         id: toDoId,
-        // AND:{
-        //   items :{
-        //     some: {
-        //       id: itemId
-        //     }
-        //   }
-        // }
       },
-      data:{
-        items:{
-          update:{
-            where:{
+      data: {
+        items: {delete: {id: itemId}},
+        updated_at: new Date()
+      }
+    })
+  }
+
+  async updateItem(toDoId: string, itemId: string, content: string | undefined, toDo: undefined | boolean) {
+    await toDoList.update({
+      where: {id: toDoId},
+      data: {
+        items: {
+          update: {
+            where: {
               id: itemId
             },
-            data:{
-              deleted: true,
-              deleted_date: new Date()
+            data: {
+              content: content,
+              to_do: toDo
             }
           }
         }

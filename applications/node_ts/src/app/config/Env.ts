@@ -15,7 +15,7 @@ if (!language || !["PT","EN"].includes(language)){
 export const env: EnvType = {
   application: {
     language: language,
-    port: 8080,
+    port: 8081,
     emailRegex: new RegExp("^[\\w-\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"),
     cors: {
       methods: "POST, GET, PATCH, DELETE",

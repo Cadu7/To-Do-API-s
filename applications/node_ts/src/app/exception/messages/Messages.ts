@@ -14,6 +14,8 @@ switch (env.application.language) {
 }
 
 export interface MessageType {
+  INSUFFICIENT_FIELDS: string;
+  TO_DO_ITEM_NOT_FOUND: string;
   CANNOT_PERFORM_THIS_ACTION: string;
   TO_DO_LIST_NOT_FOUND: string;
   NOT_FOUND: string;
