@@ -14,6 +14,11 @@ export interface IToDoList {
   items: IToDoItem[]
 }
 
+export interface ICompletedToDoListDataBase extends ToDoList {
+  items: ToDoItem[];
+  customer: Customer | null
+}
+
 const toDoItemMapper = (item: ToDoItem): IToDoItem => {
   return {
     toDo: item.to_do,
@@ -22,7 +27,7 @@ const toDoItemMapper = (item: ToDoItem): IToDoItem => {
   }
 }
 
-export const toDoListMapper = (toDo: (ToDoList & { items: ToDoItem[]; customer: Customer | null })): IToDoList => {
+export const toDoListMapper = (toDo: ICompletedToDoListDataBase): IToDoList => {
   return {
     id: toDo.id,
     name: toDo.name,

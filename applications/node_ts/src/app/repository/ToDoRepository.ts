@@ -1,6 +1,7 @@
 import {ToDoItemsRequest} from "../model/ToDoItemsRequest";
 import {toDoList} from "./Prisma";
 import {v4} from "uuid";
+import {ICompletedToDoListDataBase} from "../model/IToDoList";
 
 export class ToDoRepository {
 
@@ -40,7 +41,7 @@ export class ToDoRepository {
     })
   }
 
-  async findOneByCustomerId(customerId: string, toDoId: string) {
+  async findOneByCustomerId(customerId: string, toDoId: string): Promise<ICompletedToDoListDataBase | null> {
     return toDoList.findFirst({
       include: {
         customer: true,

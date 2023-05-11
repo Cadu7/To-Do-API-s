@@ -4,7 +4,7 @@ import {container} from "tsyringe";
 import {ToDoRepository} from "../repository/ToDoRepository";
 import {UserService} from "./UserService";
 import {Customer, ToDoItem, ToDoList} from "@prisma/client";
-import {IToDoList, toDoListMapper} from "../model/IToDoList";
+import {ICompletedToDoListDataBase, IToDoList, toDoListMapper} from "../model/IToDoList";
 import {log} from "../config/Log";
 import {InvalidRequestException} from "../exception/InvalidRequestException";
 import {messages} from "../exception/messages/Messages";
@@ -68,10 +68,7 @@ export class ToDoListService {
     return customer;
   }
 
-  private async findToDoList(user: string, toDoId: string): Promise<(ToDoList & {
-    items: ToDoItem[];
-    customer: Customer | null
-  })> {
+  private async findToDoList(user: string, toDoId: string): Promise<ICompletedToDoListDataBase> {
     const customer: Customer = await this.userService.findCustomerByUserName(user);
     const toDo = await this.toDoRepository.findOneByCustomerId(customer.id, toDoId);
 
@@ -86,9 +83,9 @@ export class ToDoListService {
     validateField(toDoId, "toDoId", checkIsNull, checkIsEmpty, checkIsUUID)
     validateField(content, "content", checkIsNull)
 
-    await this.verifyIfToDoIdIsFromCurrentUser(user,toDoId);
+    await this.verifyIfToDoIdIsFromCurrentUser(user, toDoId);
 
-    await this.toDoRepository.updateListName(toDoId,content)
+    await this.toDoRepository.updateListName(toDoId, content)
     log.info(`To do list with the id ${toDoId} has the name updated`)
   }
 }
