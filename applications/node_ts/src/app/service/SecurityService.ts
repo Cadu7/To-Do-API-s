@@ -5,7 +5,7 @@ import {UserService} from "./UserService";
 import {messages} from "../exception/messages/Messages";
 import {AuthRequestException} from "../exception/AuthRequestException";
 import {User} from "@prisma/client";
-import {sign, verify, VerifyCallback} from 'jsonwebtoken'
+import {sign, verify} from 'jsonwebtoken'
 import {env} from "../config/Env";
 
 const {security} = env.application

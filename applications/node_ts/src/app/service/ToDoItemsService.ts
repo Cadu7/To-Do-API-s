@@ -3,8 +3,7 @@ import {ToDoItemsRequest, ToDoItemsRequestUpdate} from "../model/ToDoItemsReques
 import {container} from "tsyringe";
 import {ToDoRepository} from "../repository/ToDoRepository";
 import {UserService} from "./UserService";
-import {Customer, ToDoItem, ToDoList} from "@prisma/client";
-import {IToDoList, toDoListMapper} from "../model/IToDoList";
+import {Customer} from "@prisma/client";
 import {log} from "../config/Log";
 import {InvalidRequestException} from "../exception/InvalidRequestException";
 import {messages} from "../exception/messages/Messages";

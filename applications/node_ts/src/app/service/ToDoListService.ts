@@ -1,9 +1,9 @@
-import {checkIsEmpty, checkIsEmptyList, checkIsNull, checkIsUUID, validateField} from "../utils/Validator"
-import {ToDoItemsRequest, ToDoItemsRequestUpdate} from "../model/ToDoItemsRequest";
+import {checkIsEmpty, checkIsNull, checkIsUUID, validateField} from "../utils/Validator"
+import {ToDoItemsRequest} from "../model/ToDoItemsRequest";
 import {container} from "tsyringe";
 import {ToDoRepository} from "../repository/ToDoRepository";
 import {UserService} from "./UserService";
-import {Customer, ToDoItem, ToDoList} from "@prisma/client";
+import {Customer} from "@prisma/client";
 import {ICompletedToDoListDataBase, IToDoList, toDoListMapper} from "../model/IToDoList";
 import {log} from "../config/Log";
 import {InvalidRequestException} from "../exception/InvalidRequestException";

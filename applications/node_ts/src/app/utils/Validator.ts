@@ -35,7 +35,7 @@ export const checkIsUUID = (field: any, fieldName: string): void => {
   }
 }
 
-export const checkIsEmail = (field: any, fieldName: string): void => {
+export const checkIsEmail = (field: any, _fieldName: string): void => {
   if (!field.match(env.application.emailRegex)) {
     throw new InvalidRequestException(messages.INVALID_OBJECT, messages.FIELD_IS_NOT_EMAIL);
   }

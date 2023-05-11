@@ -27,7 +27,7 @@ export class ToDoRepository {
     });
   }
 
-  findAllByCustomerId(customerId: string) {
+  findAllByCustomerId(customerId: string): Promise<ICompletedToDoListDataBase[]> {
     return toDoList.findMany({
       include: {
         customer: true,
@@ -78,8 +78,8 @@ export class ToDoRepository {
       .then(result => result.map(object => object.id))
   }
 
-  addItemsToList(toDoId: string, id: string, items: ToDoItemsRequest[]) {
-    return toDoList.update({
+  async addItemsToList(toDoId: string, id: string, items: ToDoItemsRequest[]): Promise<void> {
+    await toDoList.update({
       where: {
         id: toDoId,
       },
@@ -92,8 +92,8 @@ export class ToDoRepository {
     })
   }
 
-  removeItemFromToDoList(toDoId: string, itemId: string) {
-    return toDoList.update({
+  async removeItemFromToDoList(toDoId: string, itemId: string): Promise<void> {
+    await toDoList.update({
       where: {
         id: toDoId,
       },
