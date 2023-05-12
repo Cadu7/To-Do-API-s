@@ -5,7 +5,18 @@ services:
   database:
     image: postgres:15-alpine
     container_name: api_database
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./scripts:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_DB: to_do_db
-      POSTGRES_PASSWORD: application
-      POSTGRES_USER: q3P9MYsh49pNmVlPnKdhoX4hssCDi1uKsTL4iREqubyqYOe1dLE3mXwQwEDgHUTKTcwX0gMpcj8bHn0aQQbRjwn38KRuLph8H33l
+      POSTGRES_PASSWORD: q3P9MYsh49pNmVlPnKdhoX4hssCDi1uKsTL4iREqubyqYOe1dLE3mXwQwEDgHUTKTcwX0gMpcj8bHn0aQQbRjwn38KRuLph8H33l
+      POSTGRES_USER: application
+    networks:
+      - db-api
+
+networks:
+  db-api:
+    name: db-api-network
