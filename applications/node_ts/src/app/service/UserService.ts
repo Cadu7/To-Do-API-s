@@ -6,7 +6,7 @@ import {log} from "../config/Log";
 import {InvalidRequestException} from "../exception/InvalidRequestException";
 import {messages} from "../exception/messages/Messages";
 import {SecurityService} from "./SecurityService";
-import {Customer, User} from "@prisma/client";
+import {Customer} from "@prisma/client";
 import {CustomerRepository} from "../repository/CustomerRepository";
 import {ICompletedCustomer} from "../model/ICompletedCustomer";
 
@@ -36,10 +36,6 @@ export class UserService {
         log.info(`The user was successfully created`)
     }
     
-    private async createCustomer(userId: string, userName: string): Promise<void> {
-        await this.customerRepository.create(userId, userName);
-    }
-    
     findCustomerByEmail(email: string): Promise<ICompletedCustomer | void | null> {
         return this.customerRepository.findCustomerByEmail(email);
     }
@@ -52,5 +48,9 @@ export class UserService {
             throw new InvalidRequestException(messages.INVALID_OBJECT, messages.CUSTOMER_NOT_FOUND);
         }
         return customer;
+    }
+    
+    private async createCustomer(userId: string, userName: string): Promise<void> {
+        await this.customerRepository.create(userId, userName);
     }
 }

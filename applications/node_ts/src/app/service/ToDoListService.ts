@@ -58,6 +58,16 @@ export class ToDoListService {
         log.info(`To do list with the id ${toDoId} was deleted`)
     }
     
+    async updateOne(user: string, toDoId: string, name: string) {
+        validateField(toDoId, "toDoId", checkIsNull, checkIsEmpty, checkIsUUID)
+        validateField(name, "name", checkIsNull)
+        
+        await this.verifyIfToDoIdIsFromCurrentUser(user, toDoId);
+        
+        await this.toDoRepository.updateListName(toDoId, name)
+        log.info(`To do list with the id ${toDoId} has the name updated`)
+    }
+    
     private async verifyIfToDoIdIsFromCurrentUser(userName: string, toDoId: string): Promise<Customer> {
         const customer: Customer = await this.userService.findCustomerByUserName(userName);
         
@@ -78,15 +88,5 @@ export class ToDoListService {
             throw new InvalidRequestException(messages.NOT_FOUND, messages.TO_DO_LIST_NOT_FOUND, 404);
         }
         return toDo;
-    }
-    
-    async updateOne(user: string, toDoId: string, name: string) {
-        validateField(toDoId, "toDoId", checkIsNull, checkIsEmpty, checkIsUUID)
-        validateField(name, "name", checkIsNull)
-        
-        await this.verifyIfToDoIdIsFromCurrentUser(user, toDoId);
-        
-        await this.toDoRepository.updateListName(toDoId, name)
-        log.info(`To do list with the id ${toDoId} has the name updated`)
     }
 }

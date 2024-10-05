@@ -14,17 +14,6 @@ export class ToDoItemsService {
     private readonly toDoRepository = container.resolve(ToDoRepository);
     private readonly userService = container.resolve(UserService);
     
-    private async verifyIfToDoIdIsFromCurrentUser(userName: string, toDoId: string): Promise<Customer> {
-        const customer: Customer = await this.userService.findCustomerByUserName(userName);
-        
-        const toDoIds = await this.toDoRepository.listToDoIdsFromCustomerId(customer.id);
-        
-        if (!toDoIds.includes(toDoId)) {
-            throw new InvalidRequestException(messages.INVALID_OBJECT, messages.CANNOT_PERFORM_THIS_ACTION)
-        }
-        return customer;
-    }
-    
     async addItems(user: string, toDoId: string, items: ToDoItemsRequest[]) {
         
         validateField(toDoId, "toDoId", checkIsNull, checkIsEmpty, checkIsUUID)
@@ -73,5 +62,16 @@ export class ToDoItemsService {
             log.error(`Error updating to-do item: ${error}`)
             throw error;
         }
+    }
+    
+    private async verifyIfToDoIdIsFromCurrentUser(userName: string, toDoId: string): Promise<Customer> {
+        const customer: Customer = await this.userService.findCustomerByUserName(userName);
+        
+        const toDoIds = await this.toDoRepository.listToDoIdsFromCustomerId(customer.id);
+        
+        if (!toDoIds.includes(toDoId)) {
+            throw new InvalidRequestException(messages.INVALID_OBJECT, messages.CANNOT_PERFORM_THIS_ACTION)
+        }
+        return customer;
     }
 }
