@@ -1,0 +1,2 @@
+you can add this line in security session request. Add this line in the Script tab of the request:
+pm.globals.set("bearerToken",pm.response.json().token)
