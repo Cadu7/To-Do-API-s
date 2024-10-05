@@ -14,18 +14,17 @@ export class UserRepository {
     }
   }
 
-  async createNewUser(userData: UserData): Promise<User> {
+  create(userData: {password: string, email: string}): Promise<User> {
     return user.create({
       data: {
         password: userData.password,
         email: userData.email,
-        name: userData.name,
         id: v4()
       }
     });
   }
 
-  async findByEmail(username: string): Promise<User | void | null> {
-    return await user.findFirst({where: {email: username}})
+  findByEmail(username: string): Promise<User | void | null> {
+    return user.findFirst({where: {email: username}})
   }
 }

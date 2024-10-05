@@ -8,7 +8,7 @@ export const log = createLogger({
         format: combine(
             colorize({all: false, level: true, colors: {info: 'green', error: 'red', debug: "blue"}}),
             timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),
-            printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
+            printf(info => `${info.timestamp} ${info.level}: ${info.message instanceof Object ? JSON.stringify(info.message) : info.message}`)
         )
     })
 });

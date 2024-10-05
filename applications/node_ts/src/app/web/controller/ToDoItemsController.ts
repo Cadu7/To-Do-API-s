@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import {container} from "tsyringe";
 import {ToDoItemsService} from "../../service/ToDoItemsService";
-import {ToDoItemsRequest, ToDoItemsRequestUpdate} from "../../model/ToDoItemsRequest";
+import {ToDoItemsRequest} from "../../model/ToDoItemsRequest";
 
 export class ToDoItemsController {
 
@@ -30,9 +30,9 @@ export class ToDoItemsController {
 
     const {user} = response.locals
     const {toDoId, itemId} = request.params;
-    const item = request.body as ToDoItemsRequestUpdate
+    const {done} = request.body
 
-    await container.resolve(ToDoItemsService).updateItem(user, toDoId, itemId, item);
+    await container.resolve(ToDoItemsService).updateItem(user, toDoId, itemId, done);
 
     response.status(200).send();
   }

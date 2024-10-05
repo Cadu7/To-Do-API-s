@@ -4,9 +4,10 @@ import {container} from "tsyringe";
 import {UserService} from "./UserService";
 import {messages} from "../exception/messages/Messages";
 import {AuthRequestException} from "../exception/AuthRequestException";
-import {User} from "@prisma/client";
+import {Customer, User} from "@prisma/client";
 import {sign, verify} from 'jsonwebtoken'
 import {env} from "../config/Env";
+import {ICompletedCustomer} from "../model/ICompletedCustomer";
 
 const {security} = env.application
 
@@ -19,21 +20,21 @@ export class SecurityService {
     validateField(username, "username", checkIsNull, checkIsEmpty)
     validateField(password, "password", checkIsNull, checkIsEmpty)
 
-    const user = await container.resolve(UserService).findUserByUserName(username);
-    if (!user) {
+    const customer = await container.resolve(UserService).findCustomerByEmail(username);
+    if (!customer) {
       throw new AuthRequestException(messages.INVALID_OBJECT, messages.INCORRECT_USER_OR_PASSWORD);
     }
 
-    if (!this.verifyPassword(password, user.password)) {
+    if (!this.verifyPassword(password, customer.user.password)) {
       throw new AuthRequestException(messages.INVALID_OBJECT, messages.INCORRECT_USER_OR_PASSWORD);
     }
 
-    return this.generateToken(user);
+    return this.generateToken(customer);
   }
 
-  private generateToken(user: User): string {
+  private generateToken(customer: ICompletedCustomer): string {
     return sign(
-      {email: user.email, name: user.name},
+      {email: customer.user.email, name: customer.name},
       security.secret,
       {issuer: this.ISSUER, expiresIn: security.expireIn}
     )

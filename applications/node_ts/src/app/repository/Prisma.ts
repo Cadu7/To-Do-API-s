@@ -1,3 +1,3 @@
 import {PrismaClient} from '@prisma/client'
 
-export const {toDoList, user, customer} = new PrismaClient();
+export const {list, user, customer} = new PrismaClient();

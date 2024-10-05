@@ -3,12 +3,10 @@ import {container} from "tsyringe"
 import {UserService} from "../../service/UserService";
 
 export class UserController {
-
-  async create(request: Request, response: Response) {
-    const body = request.body;
-
-    await container.resolve(UserService).createUser(body)
-
-    response.status(201).send();
-  }
+    
+    async create(request: Request, response: Response) {
+        const {name, email, password} = request.body;
+        await container.resolve(UserService).createUser({name, email, password});
+        response.status(201).send();
+    }
 }

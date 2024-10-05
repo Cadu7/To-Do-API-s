@@ -1,10 +1,9 @@
-import {ToDoList, ToDoItem, Customer} from "@prisma/client"
+import {List, Item, Customer} from "@prisma/client"
 
 export interface IToDoItem {
   id: string,
   content: string,
-  toDo: boolean,
-  deleted?: boolean,
+  done: boolean,
 }
 
 export interface IToDoList {
@@ -14,14 +13,14 @@ export interface IToDoList {
   items: IToDoItem[]
 }
 
-export interface ICompletedToDoListDataBase extends ToDoList {
-  items: ToDoItem[];
-  customer: Customer | null
+export interface ICompletedToDoListDataBase extends List {
+  items: Item[];
+  customer: Customer
 }
 
-const toDoItemMapper = (item: ToDoItem): IToDoItem => {
+const toDoItemMapper = (item: Item): IToDoItem => {
   return {
-    toDo: item.to_do,
+    done: item.done,
     content: item.content,
     id: item.id,
   }

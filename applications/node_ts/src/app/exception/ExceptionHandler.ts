@@ -9,7 +9,7 @@ export const exceptionHandler = (error: Error | InvalidRequestException | AuthRe
                                  response: Response,
                                  _next: NextFunction) => {
 
-  log.error(`Error on api`, error)
+  log.error(`Error on api:`, error)
 
   let body;
   let status;
