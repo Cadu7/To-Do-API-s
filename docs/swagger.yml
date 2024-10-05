@@ -394,7 +394,6 @@ paths:
                 message: Nenhuma to do list foi encontrada para o id informado
         500:
           $ref: "#/components/responses/500"
-
 components:
   schemas:
     toDoList:
