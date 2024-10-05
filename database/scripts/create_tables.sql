@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS "user" (
 CREATE TABLE IF NOT EXISTS "customer" (
     id         UUID           PRIMARY KEY,
     created_at TIMESTAMP(3)   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "user"     UUID           NOT NULL REFERENCES "user"(id),
+    "user"     UUID           NOT NULL REFERENCES "user"(id) ON DELETE CASCADE,
     name       VARCHAR(255)   NOT NULL
 );
 
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS "list" (
     name        TEXT         NOT NULL,
     created_at  TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at  TIMESTAMP(3) NOT NULL,
-    customer    UUID         REFERENCES "customer"(id)
+    customer    UUID         REFERENCES "customer"(id) ON DELETE CASCADE
 );
 
 -- CreateTable
@@ -27,6 +27,5 @@ CREATE TABLE IF NOT EXISTS "item" (
     id            UUID     PRIMARY KEY ,
     content       TEXT     NOT NULL,
     done          BOOLEAN  NOT NULL DEFAULT false,
-    to_do_list    UUID     REFERENCES "list"(id)
+    to_do_list    UUID     REFERENCES "list"(id) ON DELETE CASCADE
 );
-
