@@ -1,17 +1,18 @@
 User:{
     id: uuid
     email: string
-    name: string
     password: string
 }
 
-To-do-item:{
+Customer: {
     id: uuid
-    content: string
-    to-do: false
+    name: String
+    user: User
+    lists: To-do[]
+    created_at: Date
 }
 
-To-do-list: {
+List: {
     id: uuid
     name: string
     items: Item[]
@@ -19,9 +20,8 @@ To-do-list: {
     updated_at: Date
 }
 
-Customer: {
+Item:{
     id: uuid
-    user: User
-    lists: To-do[]
-    created_at: Date
+    content: string
+    done: boolean
 }
