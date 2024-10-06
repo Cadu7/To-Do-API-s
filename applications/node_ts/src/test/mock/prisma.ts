@@ -10,6 +10,7 @@ vi.mock("../../app/repository/Prisma", () => ({
     },
     list: {},
     customer: {
+        findFirst: vi.fn(),
         create: vi.fn()
     }
 }))

@@ -1,8 +1,7 @@
 import {describe, expect, it} from "vitest";
-import {app} from "../../app/web/Server"
-import request from "supertest";
 import {customerMock, userMock} from "../mock/prisma";
 import {messages} from "../../app/exception/messages/Messages";
+import {apiServer} from "../mock/server";
 
 describe("check functionalities of user", () => {
     
@@ -16,19 +15,20 @@ describe("check functionalities of user", () => {
         
         it("should create a new user and return 201", async () => {
             userMock.findFirst.mockResolvedValue(null)
+            // @ts-ignore
             userMock.create.mockImplementation(params => ({
                     id: params.data.id,
                     email: params.data.email,
                     password: params.data.password
                 })
             )
-            customerMock.create.mockImplementation(params =>
-                ({
+            // @ts-ignore
+            customerMock.create.mockImplementation(params => ({
                     id: params.data.id,
                     name: params.data.name
                 })
             )
-            const response = await request(app)
+            const response = await apiServer
                 .post("/user")
                 .send(correctUser)
                 .set('Accept', 'application/json')
@@ -71,7 +71,7 @@ describe("check functionalities of user", () => {
                 email: correctUser.email,
                 password: "123456789123"
             })
-            const response = await request(app)
+            const response = await apiServer
                 .post("/user")
                 .send(correctUser)
                 .set('Accept', 'application/json')
@@ -88,7 +88,7 @@ describe("check functionalities of user", () => {
         })
         
         it("should not create a user with undefined email and return 400", async () => {
-            const response = await request(app)
+            const response = await apiServer
                 .post("/user")
                 .send({...correctUser, email: undefined})
                 .set('Accept', 'application/json')
@@ -104,7 +104,7 @@ describe("check functionalities of user", () => {
         })
         
         it("should not create a user with null email and return 400", async () => {
-            const response = await request(app)
+            const response = await apiServer
                 .post("/user")
                 .send({...correctUser, email: null})
                 .set('Accept', 'application/json')
@@ -120,7 +120,7 @@ describe("check functionalities of user", () => {
         })
         
         it("should not create a user with blank email and return 400", async () => {
-            const response = await request(app)
+            const response = await apiServer
                 .post("/user")
                 .send({...correctUser, email: " "})
                 .set('Accept', 'application/json')
@@ -136,7 +136,7 @@ describe("check functionalities of user", () => {
         })
         
         it("should not create a user with empty email and return 400", async () => {
-            const response = await request(app)
+            const response = await apiServer
                 .post("/user")
                 .send({...correctUser, email: ""})
                 .set('Accept', 'application/json')
@@ -152,7 +152,7 @@ describe("check functionalities of user", () => {
         })
         
         it("should not create a user with undefined password and return 400", async () => {
-            const response = await request(app)
+            const response = await apiServer
                 .post("/user")
                 .send({...correctUser, password: undefined})
                 .set('Accept', 'application/json')
@@ -168,7 +168,7 @@ describe("check functionalities of user", () => {
         })
         
         it("should not create a user with null password and return 400", async () => {
-            const response = await request(app)
+            const response = await apiServer
                 .post("/user")
                 .send({...correctUser, password: null})
                 .set('Accept', 'application/json')
@@ -184,7 +184,7 @@ describe("check functionalities of user", () => {
         })
         
         it("should not create a user with blank password and return 400", async () => {
-            const response = await request(app)
+            const response = await apiServer
                 .post("/user")
                 .send({...correctUser, password: " "})
                 .set('Accept', 'application/json')
@@ -200,7 +200,7 @@ describe("check functionalities of user", () => {
         })
         
         it("should not create a user with empty password and return 400", async () => {
-            const response = await request(app)
+            const response = await apiServer
                 .post("/user")
                 .send({...correctUser, password: ""})
                 .set('Accept', 'application/json')
@@ -216,7 +216,7 @@ describe("check functionalities of user", () => {
         })
         
         it("should not create a user with password too short and return 400", async () => {
-            const response = await request(app)
+            const response = await apiServer
                 .post("/user")
                 .send({...correctUser, password: "123456789"})
                 .set('Accept', 'application/json')
