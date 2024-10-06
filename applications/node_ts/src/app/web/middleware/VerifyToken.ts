@@ -7,7 +7,7 @@ import {SecurityService} from "../../service/SecurityService";
 export const verifyToken = async (request: Request, response: Response, next: NextFunction) => {
     const authorizationHeader = request.headers.authorization;
     
-    if (!authorizationHeader || !authorizationHeader.startsWith("Bearer")) {
+    if (!authorizationHeader?.startsWith("Bearer")) {
         throw new AuthRequestException(messages.UNAUTHORIZED, messages.MISSING_OR_WRONG_TOKEN)
     }
     

@@ -16,7 +16,7 @@ export const env: EnvType = {
     application: {
         language: language,
         port: 8080,
-        emailRegex: new RegExp("^[\\w-\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"),
+        emailRegex: new RegExp("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$"),
         cors: {
             methods: "POST, GET, PATCH, DELETE",
             origin: [
@@ -26,7 +26,7 @@ export const env: EnvType = {
         },
         security: {
             secret: secret,
-            expireIn: process.env.SECURITY_EXPIRE_IN || "1h"
+            expireIn: process.env.SECURITY_EXPIRE_IN ?? "1h"
         }
     }
 }

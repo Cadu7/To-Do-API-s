@@ -18,7 +18,7 @@ export class ToDoListService {
         
         validateField(name, "name", checkIsNull, checkIsEmpty)
         
-        const itemsToInsert = items == null || false ? [] : items
+        const itemsToInsert = items ?? []
         const customer: Customer = await this.userService.findCustomerByUserName(user);
         let list = await this.toDoRepository.create({userId: customer.id, name, items: itemsToInsert});
         log.info(`To do list was created`)
