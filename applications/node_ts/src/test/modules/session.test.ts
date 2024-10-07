@@ -14,6 +14,7 @@ describe("check functionalities of session", () => {
     let encodedPassword = new SecurityService().encryptPassword(password);
     
     describe("should test controller", () => {
+        
         it("should login and return a token and 200 status", async () => {
             customerMock.findFirst.mockResolvedValue({
                 id: "60a40fe8-6fb8-4382-850d-55188fbbe489",
@@ -86,6 +87,7 @@ describe("check functionalities of session", () => {
             });
             expect(customerMock.findFirst).toHaveBeenCalledTimes(0);
         })
+        
         it("should return 400 status when username blank is not informed", async () => {
             let response = await apiServer
                 .post("/session/login")
@@ -137,6 +139,7 @@ describe("check functionalities of session", () => {
             });
             expect(customerMock.findFirst).toHaveBeenCalledTimes(0);
         })
+        
         it("should return 400 status when password blank is not informed", async () => {
             let response = await apiServer
                 .post("/session/login")
@@ -207,7 +210,6 @@ describe("check functionalities of session", () => {
                 }
             });
         })
-        
         
     })
     
