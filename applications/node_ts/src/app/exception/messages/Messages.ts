@@ -2,16 +2,7 @@ import {env} from "../../config/Env";
 import {messagesPT} from "./MessagesPT";
 import {messagesEN} from "./MessagesEN";
 
-export let messages: MessageType;
-
-switch (env.application.language) {
-    case "EN":
-        messages = messagesEN
-        break;
-    case "PT":
-        messages = messagesPT
-        break;
-}
+export const messages: MessageType = env.application.language === "PT" ? messagesPT : messagesEN;
 
 export interface MessageType {
     INSUFFICIENT_FIELDS: string;
