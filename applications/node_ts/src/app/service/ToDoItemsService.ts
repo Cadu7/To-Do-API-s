@@ -43,7 +43,7 @@ export class ToDoItemsService {
         
         if (!done) {
             log.error("No body for update was informed")
-            throw new InvalidRequestException(messages.INVALID_OBJECT, messages.INSUFFICIENT_FIELDS);
+            throw new InvalidRequestException(messages.INVALID_OBJECT, messages.FIELD_IS_NULL("done"));
         }
         await this.verifyIfToDoIdIsFromCurrentUser(user, toDoId);
         
@@ -53,11 +53,10 @@ export class ToDoItemsService {
         try {
             await this.toDoRepository.updateItem(toDoId, itemId, done);
             log.info(`To do item successfully updated`)
-            
         } catch (error) {
             if (error instanceof PrismaClientKnownRequestError && error.code === "P2025") {
                 log.error(`To do item with the id ${itemId} was not found`)
-                throw new InvalidRequestException(messages.INVALID_OBJECT, messages.TO_DO_ITEM_NOT_FOUND);
+                throw new InvalidRequestException(messages.NOT_FOUND, messages.TO_DO_ITEM_NOT_FOUND, 404);
             }
             log.error(`Error updating to-do item: ${error}`)
             throw error;
