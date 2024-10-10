@@ -4,7 +4,6 @@ import {SecurityService} from "../../app/service/SecurityService";
 import {apiServer} from "../mock/server";
 import {messages} from "../../app/exception/messages/Messages";
 import {v4} from "uuid";
-import exp from "node:constants";
 import {PrismaClientKnownRequestError} from "@prisma/client/runtime/library";
 
 describe("check functionalities of item of todo list", () => {
@@ -391,6 +390,136 @@ describe("check functionalities of item of todo list", () => {
                             where: {
                                 id: itemId
                             }
+                        }
+                    },
+                    updated_at: expect.any(Date)
+                }
+            })
+        })
+        
+    })
+    
+    describe("should test delete controller", () => {
+        
+        it("should return 401 if token is not informed", async () => {
+            let response = await apiServer.delete(`/to-do/item/${listId}/${itemId}`);
+            expect(response.status).toBe(401);
+        })
+        
+        it("should return 401 if token is not Bearer", async () => {
+            let response = await apiServer.delete(`/to-do/item/${listId}/${itemId}`).set({"Authorization": token});
+            expect(response.status).toBe(401);
+        })
+        
+        it("should return 404 if todo list not found", async () => {
+            customerMock.findFirst.mockResolvedValue({
+                id: customerId,
+                name: "Carlos",
+                user_id: "9985c7f5-1852-4c0c-8dad-77a03801635d",
+                user: {
+                    email: "carlos@email.com",
+                    password: await new SecurityService().encryptPassword("123456789147852"),
+                    id: "9985c7f5-1852-4c0c-8dad-77a03801635d"
+                }
+            } as any);
+            listMock.findMany.mockResolvedValue([])
+            
+            let response = await apiServer.delete(`/to-do/item/${listId}/${itemId}`).set({"Authorization": tokenWithBearer});
+            
+            expect(response.status).toBe(404);
+            expect(response.body).toStrictEqual({error: messages.NOT_FOUND, message: messages.TO_DO_LIST_NOT_FOUND});
+            expect(listMock.findMany).toBeCalledTimes(1);
+            expect(listMock.findMany).toBeCalledWith({
+                where: {
+                    customer: {
+                        id: customerId
+                    }
+                },
+                select: {
+                    id: true
+                }
+            })
+            expect(customerMock.findFirst).toBeCalledTimes(1);
+        })
+        
+        it("should return 400 if todo list id is not an uuid", async () => {
+            
+            let response = await apiServer.delete(`/to-do/item/invalid-uuid/${itemId}`).set({"Authorization": tokenWithBearer});
+            
+            expect(response.status).toBe(400);
+            expect(response.body).toStrictEqual({
+                error: messages.INVALID_OBJECT,
+                message: messages.FIELD_IS_NOT_UUID("toDoId")
+            });
+        })
+        
+        it("should return 400 if todo item id is not an uuid", async () => {
+            
+            let response = await apiServer.delete(`/to-do/item/${listId}/invalid-uuid`).set({"Authorization": tokenWithBearer});
+            
+            expect(response.status).toBe(400);
+            expect(response.body).toStrictEqual({
+                error: messages.INVALID_OBJECT,
+                message: messages.FIELD_IS_NOT_UUID("itemId")
+            });
+        })
+        
+        it("should return 200 if success", async () => {
+            customerMock.findFirst.mockResolvedValue({
+                id: customerId,
+                name: "Carlos",
+                user_id: "9985c7f5-1852-4c0c-8dad-77a03801635d",
+                user: {
+                    email: "carlos@email.com",
+                    password: await new SecurityService().encryptPassword("123456789147852"),
+                    id: "9985c7f5-1852-4c0c-8dad-77a03801635d"
+                }
+            } as any);
+            let dbResponse = {
+                id: listId,
+                name: "List of to do",
+                updated_at: new Date(),
+                created_at: new Date(),
+                customer_id: customerId,
+                items: [
+                    {id: itemId, content: "item 1", done: false, to_do_list_id: listId}
+                ],
+                customer: {
+                    id: customerId,
+                    name: "Carlos",
+                    user_id: "9985c7f5-1852-4c0c-8dad-77a03801635d",
+                    user: {
+                        email: "carlos@email.com",
+                        password: await new SecurityService().encryptPassword("123456789147852"),
+                        id: "9985c7f5-1852-4c0c-8dad-77a03801635d"
+                    }
+                }
+            };
+            listMock.findMany.mockResolvedValue([dbResponse])
+            listMock.update.mockResolvedValue(null as any)
+            
+            let response = await apiServer.delete(`/to-do/item/${listId}/${itemId}`).set({"Authorization": tokenWithBearer});
+            
+            expect(response.status).toBe(200);
+            expect(customerMock.findFirst).toBeCalledTimes(1);
+            expect(listMock.findMany).toBeCalledTimes(1);
+            expect(listMock.findMany).toBeCalledWith({
+                where: {
+                    customer: {
+                        id: customerId
+                    }
+                },
+                select: {
+                    id: true
+                }
+            })
+            expect(listMock.update).toBeCalledTimes(1);
+            expect(listMock.update).toBeCalledWith({
+                where: {id: listId},
+                data: {
+                    items: {
+                        delete: {
+                            id: itemId
                         }
                     },
                     updated_at: expect.any(Date)
