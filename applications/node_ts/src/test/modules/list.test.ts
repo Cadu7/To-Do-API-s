@@ -610,7 +610,7 @@ describe("check functionalities of list of to do", () => {
         
         it("should return 400 for null name", async () => {
             
-            let response = await apiServer.put(`/to-do/${listId}`).set({"Authorization": tokenWithBearer}).send({name:null});
+            let response = await apiServer.put(`/to-do/${listId}`).set({"Authorization": tokenWithBearer}).send({name: null});
             
             expect(response.status).toBe(400);
             expect(response.body).toStrictEqual({
@@ -623,7 +623,7 @@ describe("check functionalities of list of to do", () => {
         
         it("should return 400 for undefined name", async () => {
             
-            let response = await apiServer.put(`/to-do/${listId}`).set({"Authorization": tokenWithBearer}).send({name:undefined});
+            let response = await apiServer.put(`/to-do/${listId}`).set({"Authorization": tokenWithBearer}).send({name: undefined});
             
             expect(response.status).toBe(400);
             expect(response.body).toStrictEqual({
@@ -646,9 +646,9 @@ describe("check functionalities of list of to do", () => {
                 }
             } as any);
             listMock.findMany.mockResolvedValue([])
-
-            let response = await apiServer.put(`/to-do/${listId}`).set({"Authorization": tokenWithBearer}).send({name:"new name"});
-
+            
+            let response = await apiServer.put(`/to-do/${listId}`).set({"Authorization": tokenWithBearer}).send({name: "new name"});
+            
             expect(response.status).toBe(404);
             expect(response.body).toStrictEqual({error: messages.NOT_FOUND, message: messages.TO_DO_LIST_NOT_FOUND});
             expect(customerMock.findFirst).toBeCalledTimes(1);

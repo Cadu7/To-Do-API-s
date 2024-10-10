@@ -95,7 +95,10 @@ describe("check functionalities of user", () => {
             
             // verify status
             expect(response.status).toStrictEqual(400)
-            expect(response.body).toStrictEqual({error: messages.INVALID_OBJECT, message: messages.FIELD_IS_NULL("email")})
+            expect(response.body).toStrictEqual({
+                error: messages.INVALID_OBJECT,
+                message: messages.FIELD_IS_NULL("email")
+            })
             
             // verify db calls
             expect(userMock.findFirst).toHaveBeenCalledTimes(0)
@@ -111,7 +114,10 @@ describe("check functionalities of user", () => {
             
             // verify status
             expect(response.status).toStrictEqual(400)
-            expect(response.body).toStrictEqual({error: messages.INVALID_OBJECT, message: messages.FIELD_IS_NULL("email")})
+            expect(response.body).toStrictEqual({
+                error: messages.INVALID_OBJECT,
+                message: messages.FIELD_IS_NULL("email")
+            })
             
             // verify db calls
             expect(userMock.findFirst).toHaveBeenCalledTimes(0)
@@ -127,7 +133,10 @@ describe("check functionalities of user", () => {
             
             // verify status
             expect(response.status).toStrictEqual(400)
-            expect(response.body).toStrictEqual({error: messages.INVALID_OBJECT, message: messages.FIELD_IS_NULL("email")})
+            expect(response.body).toStrictEqual({
+                error: messages.INVALID_OBJECT,
+                message: messages.FIELD_IS_NULL("email")
+            })
             
             // verify db calls
             expect(userMock.findFirst).toHaveBeenCalledTimes(0)
@@ -143,7 +152,10 @@ describe("check functionalities of user", () => {
             
             // verify status
             expect(response.status).toStrictEqual(400)
-            expect(response.body).toStrictEqual({error: messages.INVALID_OBJECT, message: messages.FIELD_IS_NULL("email")})
+            expect(response.body).toStrictEqual({
+                error: messages.INVALID_OBJECT,
+                message: messages.FIELD_IS_NULL("email")
+            })
             
             // verify db calls
             expect(userMock.findFirst).toHaveBeenCalledTimes(0)
@@ -159,7 +171,10 @@ describe("check functionalities of user", () => {
             
             // verify status
             expect(response.status).toStrictEqual(400)
-            expect(response.body).toStrictEqual({error: messages.INVALID_OBJECT, message: messages.FIELD_IS_NULL("password")})
+            expect(response.body).toStrictEqual({
+                error: messages.INVALID_OBJECT,
+                message: messages.FIELD_IS_NULL("password")
+            })
             
             // verify db calls
             expect(userMock.findFirst).toHaveBeenCalledTimes(0)
@@ -175,7 +190,10 @@ describe("check functionalities of user", () => {
             
             // verify status
             expect(response.status).toStrictEqual(400)
-            expect(response.body).toStrictEqual({error: messages.INVALID_OBJECT, message: messages.FIELD_IS_NULL("password")})
+            expect(response.body).toStrictEqual({
+                error: messages.INVALID_OBJECT,
+                message: messages.FIELD_IS_NULL("password")
+            })
             
             // verify db calls
             expect(userMock.findFirst).toHaveBeenCalledTimes(0)
@@ -191,7 +209,10 @@ describe("check functionalities of user", () => {
             
             // verify status
             expect(response.status).toStrictEqual(400)
-            expect(response.body).toStrictEqual({error: messages.INVALID_OBJECT, message: messages.FIELD_IS_NULL("password")})
+            expect(response.body).toStrictEqual({
+                error: messages.INVALID_OBJECT,
+                message: messages.FIELD_IS_NULL("password")
+            })
             
             // verify db calls
             expect(userMock.findFirst).toHaveBeenCalledTimes(0)
@@ -207,7 +228,10 @@ describe("check functionalities of user", () => {
             
             // verify status
             expect(response.status).toStrictEqual(400)
-            expect(response.body).toStrictEqual({error: messages.INVALID_OBJECT, message: messages.FIELD_IS_NULL("password")})
+            expect(response.body).toStrictEqual({
+                error: messages.INVALID_OBJECT,
+                message: messages.FIELD_IS_NULL("password")
+            })
             
             // verify db calls
             expect(userMock.findFirst).toHaveBeenCalledTimes(0)
