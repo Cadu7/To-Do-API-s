@@ -13,6 +13,7 @@ vi.mock("../../app/repository/Prisma", () => ({
         findMany: vi.fn(),
         findFirst: vi.fn(),
         delete: vi.fn(),
+        update: vi.fn(),
     },
     customer: {
         findFirst: vi.fn(),

@@ -483,8 +483,171 @@ describe("check functionalities of list of to do", () => {
                 }
             } as any);
             listMock.findMany.mockResolvedValue([])
-
+            
             let response = await apiServer.delete(`/to-do/${listId}`).set({"Authorization": tokenWithBearer});
+            
+            expect(response.status).toBe(404);
+            expect(response.body).toStrictEqual({error: messages.NOT_FOUND, message: messages.TO_DO_LIST_NOT_FOUND});
+            expect(customerMock.findFirst).toBeCalledTimes(1);
+            expect(listMock.findMany).toBeCalledTimes(1);
+            expect(listMock.findMany).toBeCalledWith({
+                where: {
+                    customer: {
+                        id: customerId
+                    }
+                },
+                select: {
+                    id: true
+                }
+            })
+        })
+        
+    })
+    
+    describe("should test update one controller", () => {
+        
+        let listId = "7ddea73e-f585-437b-a8f0-2ff008ce64b6"
+        
+        it("should return 401 if token is not informed", async () => {
+            let response = await apiServer.put(`/to-do/${listId}`);
+            expect(response.status).toBe(401);
+        })
+        
+        it("should return 401 if token is not Bearer", async () => {
+            let response = await apiServer.put(`/to-do/${listId}`).set({"Authorization": token});
+            expect(response.status).toBe(401);
+        })
+        
+        it("should return 200 for success", async () => {
+            customerMock.findFirst.mockResolvedValue({
+                id: customerId,
+                name: "Carlos",
+                user_id: "9985c7f5-1852-4c0c-8dad-77a03801635d",
+                user: {
+                    email: "carlos@email.com",
+                    password: await new SecurityService().encryptPassword("123456789147852"),
+                    id: "9985c7f5-1852-4c0c-8dad-77a03801635d"
+                }
+            } as any);
+            // @ts-ignore
+            let listId = v4();
+            let dbResponse = {
+                id: listId,
+                name: "List of to do",
+                updated_at: new Date(),
+                created_at: new Date(),
+                customer_id: customerId,
+                items: [
+                    {id: v4(), content: "item 1", done: false, to_do_list_id: listId}
+                ],
+                customer: {
+                    id: customerId,
+                    name: "Carlos",
+                    user_id: "9985c7f5-1852-4c0c-8dad-77a03801635d",
+                    user: {
+                        email: "carlos@email.com",
+                        password: await new SecurityService().encryptPassword("123456789147852"),
+                        id: "9985c7f5-1852-4c0c-8dad-77a03801635d"
+                    }
+                }
+            };
+            listMock.findMany.mockResolvedValue([dbResponse] as any)
+            listMock.update.mockResolvedValue(null as any)
+            
+            let newName = "New name for to do list";
+            let response = await apiServer.put(`/to-do/${listId}`).set({"Authorization": tokenWithBearer}).send({name: newName});
+            
+            expect(response.status).toBe(200);
+            expect(customerMock.findFirst).toBeCalledTimes(1);
+            expect(listMock.findMany).toBeCalledTimes(1);
+            expect(listMock.findMany).toBeCalledWith({
+                where: {
+                    customer: {
+                        id: customerId
+                    }
+                },
+                select: {
+                    id: true
+                }
+            })
+            expect(listMock.update).toHaveBeenCalledTimes(1)
+            expect(listMock.update).toHaveBeenCalledWith({
+                where: {
+                    id: listId
+                },
+                data: {
+                    name: newName,
+                    updated_at: expect.any(Date)
+                }
+            })
+        })
+        
+        it("should return 400 for invalid uuid", async () => {
+            
+            let response = await apiServer.put(`/to-do/invalid-id`).set({"Authorization": tokenWithBearer});
+            
+            expect(response.status).toBe(400);
+            expect(response.body).toStrictEqual({
+                error: messages.INVALID_OBJECT,
+                message: messages.FIELD_IS_NOT_UUID("toDoId")
+            });
+            expect(customerMock.findFirst).toBeCalledTimes(0);
+            expect(listMock.findFirst).toBeCalledTimes(0);
+        })
+        
+        it("should return 400 for null body", async () => {
+            
+            let response = await apiServer.put(`/to-do/${listId}`).set({"Authorization": tokenWithBearer});
+            
+            expect(response.status).toBe(400);
+            expect(response.body).toStrictEqual({
+                error: messages.INVALID_OBJECT,
+                message: messages.FIELD_IS_NULL("name")
+            });
+            expect(customerMock.findFirst).toBeCalledTimes(0);
+            expect(listMock.findFirst).toBeCalledTimes(0);
+        })
+        
+        it("should return 400 for null name", async () => {
+            
+            let response = await apiServer.put(`/to-do/${listId}`).set({"Authorization": tokenWithBearer}).send({name:null});
+            
+            expect(response.status).toBe(400);
+            expect(response.body).toStrictEqual({
+                error: messages.INVALID_OBJECT,
+                message: messages.FIELD_IS_NULL("name")
+            });
+            expect(customerMock.findFirst).toBeCalledTimes(0);
+            expect(listMock.findFirst).toBeCalledTimes(0);
+        })
+        
+        it("should return 400 for undefined name", async () => {
+            
+            let response = await apiServer.put(`/to-do/${listId}`).set({"Authorization": tokenWithBearer}).send({name:undefined});
+            
+            expect(response.status).toBe(400);
+            expect(response.body).toStrictEqual({
+                error: messages.INVALID_OBJECT,
+                message: messages.FIELD_IS_NULL("name")
+            });
+            expect(customerMock.findFirst).toBeCalledTimes(0);
+            expect(listMock.findFirst).toBeCalledTimes(0);
+        })
+        
+        it("should return 404 for not found list for user", async () => {
+            customerMock.findFirst.mockResolvedValue({
+                id: customerId,
+                name: "Carlos",
+                user_id: "9985c7f5-1852-4c0c-8dad-77a03801635d",
+                user: {
+                    email: "carlos@email.com",
+                    password: await new SecurityService().encryptPassword("123456789147852"),
+                    id: "9985c7f5-1852-4c0c-8dad-77a03801635d"
+                }
+            } as any);
+            listMock.findMany.mockResolvedValue([])
+
+            let response = await apiServer.put(`/to-do/${listId}`).set({"Authorization": tokenWithBearer}).send({name:"new name"});
 
             expect(response.status).toBe(404);
             expect(response.body).toStrictEqual({error: messages.NOT_FOUND, message: messages.TO_DO_LIST_NOT_FOUND});
@@ -497,9 +660,10 @@ describe("check functionalities of list of to do", () => {
                     }
                 },
                 select: {
-                    id:true
+                    id: true
                 }
             })
+            expect(listMock.update).toHaveBeenCalledTimes(0)
         })
         
     })
