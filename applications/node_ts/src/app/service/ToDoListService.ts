@@ -74,7 +74,7 @@ export class ToDoListService {
         const toDoIds = await this.toDoRepository.listToDoIdsFromCustomerId(customer.id);
         
         if (!toDoIds.includes(toDoId)) {
-            throw new InvalidRequestException(messages.INVALID_OBJECT, messages.CANNOT_PERFORM_THIS_ACTION)
+            throw new InvalidRequestException(messages.NOT_FOUND, messages.TO_DO_LIST_NOT_FOUND, 404)
         }
         return customer;
     }
