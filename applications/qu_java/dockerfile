@@ -1,0 +1,38 @@
+FROM quay.io/quarkus/ubi-quarkus-graalvmce-builder-image:jdk-23 AS build
+
+USER root
+# versions
+ENV MAVEN_VERSION=3.9.9
+ENV ZLIB_VERSION=1.3.1
+ENV MUSL_VERSION=11.2.1
+
+# Install musl compiler
+RUN microdnf install make gcc
+RUN mkdir /musl && \
+    curl -L -o musl.tar.gz https://more.musl.cc/$MUSL_VERSION/x86_64-linux-musl/x86_64-linux-musl-native.tgz && \
+    tar -xvzf musl.tar.gz -C /musl --strip-components 1 && \
+    curl -L -o zlib.tar.gz https://github.com/madler/zlib/releases/download/v$ZLIB_VERSION/zlib-$ZLIB_VERSION.tar.gz && \
+    mkdir zlib && tar -xvzf zlib.tar.gz -C zlib --strip-components 1 && \
+    cd zlib && ./configure --static --prefix=/musl && \
+    make && make install && \
+    cd .. && rm -rf zlib && rm -f zlib.tar.gz && rm -f musl.tar.gz
+ENV PATH="/musl/bin:$PATH"
+
+# Install Maven
+RUN curl https://dlcdn.apache.org/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz -o maven.tar.gz
+RUN tar -xf ./maven.tar.gz -C /usr/local/bin && rm ./maven.tar.gz
+ENV MAVEN_HOME=/usr/local/bin/apache-maven-$MAVEN_VERSION
+ENV M2_HOME=/usr/local/bin/apache-maven-$MAVEN_VERSION
+ENV PATH="$MAVEN_HOME/bin:$M2_HOME/bin:$PATH"
+
+# build the native executable
+WORKDIR /app
+COPY ./pom.xml ./pom.xml
+COPY ./src ./src
+RUN mvn package -Dnative -DskipTests -Dquarkus.native.additional-build-args="--static","--libc=musl"
+
+## Stage 2 : create the final image
+FROM alpine:latest
+COPY --from=build /app/target/*-runner /application
+EXPOSE 8080
+ENTRYPOINT [ "/application" ]
