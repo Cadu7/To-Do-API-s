@@ -8,7 +8,7 @@ public class ValidationUtils {
         return value == null || value.isBlank();
     }
 
-    public static boolean isValidEmail(String email) {
+    public static boolean isNotValidEmail(String email) {
         return !email.matches(EMAIL_REGEX);
     }
 

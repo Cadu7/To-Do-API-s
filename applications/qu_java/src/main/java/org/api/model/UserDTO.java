@@ -24,7 +24,7 @@ public class UserDTO implements Validatable {
 
         if (isNullOrBlank(this.email)) {
             throw new InvalidRequestException(INVALID_REQUEST, fieldIsNUllOrBlank("email"));
-        } else if (isValidEmail(this.email)) {
+        } else if (isNotValidEmail(this.email)) {
             throw new InvalidRequestException(INVALID_REQUEST, EMAIL_IS_INVALID);
         }
 
