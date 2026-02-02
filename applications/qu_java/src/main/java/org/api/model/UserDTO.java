@@ -1,20 +1,12 @@
 package org.api.model;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.api.exception.InvalidRequestException;
 import org.api.util.Validatable;
 
 import static org.api.exception.Messages.*;
 import static org.api.util.ValidationUtils.*;
 
-@Getter
-@Setter
-public class UserDTO implements Validatable {
-
-    private String email;
-    private String name;
-    private String password;
+public record UserDTO(String email, String name, String password) implements Validatable {
 
     public void validate() throws InvalidRequestException {
 

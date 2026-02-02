@@ -12,4 +12,9 @@ public class ExceptionHandler {
         return Response.status(exception.getStatus()).entity(exception.getError()).build();
     }
 
+    @ServerExceptionMapper(AuthException.class)
+    public Response handleAuthException(AuthException exception) {
+        return Response.status(exception.getStatus()).entity(exception.getError()).build();
+    }
+
 }
